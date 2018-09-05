@@ -56,11 +56,11 @@ class TablaAmortizacion implements TablaAmortizacionInterface
             $this->NuevaFecha();
 
             array_push($tabla['tablaAmortizacion'], array(
-                'id' => $i,
+                'noCuota' => $i,
                 'saldo' =>  round($this->montoTotal, 2, PHP_ROUND_HALF_DOWN),
                 'interes' => round($interes, 2, PHP_ROUND_HALF_DOWN), 
                 'capital' => round($capital, 2, PHP_ROUND_HALF_DOWN),
-                'totalMes' => round($total, 2, PHP_ROUND_HALF_DOWN),
+                'total' => round($total, 2, PHP_ROUND_HALF_DOWN),
                 'fecha' => $this->fecha
             ));
 
