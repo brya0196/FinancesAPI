@@ -62,8 +62,7 @@ class TablaAmortizacion implements TablaAmortizacionInterface
             ));
 
             $this->montoTotal -= $capital;
-            // echo $this->montoTotal;
-            // echo '</br>';
+
             $this->montoTotal = round($this->montoTotal, 2);
 
             $tabla['totalCapital'] += $capital;
