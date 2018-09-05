@@ -19,7 +19,8 @@ class AmortizacionController extends Controller
         $monto = (float)$request->monto;
         $tasa = (float)$request->tasa;
         $plazo = (float)$request->plazo;
+        $fecha = $request->fecha;
 
-        return $this->tablaAmortizacion->Amortizacion($monto, $tasa, $plazo);
+        return $this->tablaAmortizacion->Amortizacion($monto, $tasa, $plazo, $fecha);
     }
 }

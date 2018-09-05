@@ -10,12 +10,13 @@ class TablaAmortizacion implements TablaAmortizacionInterface
     private $montoTotal;
     private $interes;
     private $plazo;
+    private $fecha;
 
     public function __construct()
     {
     }
 
-    public function Amortizacion($montoTotal, $interes, $plazo)
+    public function Amortizacion($montoTotal, $interes, $plazo, $fecha)
     {   
         if (!is_numeric($montoTotal) && is_string($montoTotal))
             throw new Exception("The value must be a integer");
@@ -29,6 +30,7 @@ class TablaAmortizacion implements TablaAmortizacionInterface
         $this->montoTotal = $montoTotal;
         $this->interes = $interes;
         $this->plazo = $plazo;
+        $this->fecha = $fecha;
         $tabla = array();
 
         $tabla = $this->Calcular();
@@ -46,18 +48,20 @@ class TablaAmortizacion implements TablaAmortizacionInterface
         );
         $total = $this->TotalMes();
 
-        // 
         for ($i=1; $i <= $this->plazo; $i++) { 
 
             $capital = $this->CalcularCapital($total);
             $interes = $this->CalcularInteres($total, $capital);
+            
+            $this->NuevaFecha();
 
             array_push($tabla['tablaAmortizacion'], array(
                 'id' => $i,
                 'saldo' =>  round($this->montoTotal, 2, PHP_ROUND_HALF_DOWN),
                 'interes' => round($interes, 2, PHP_ROUND_HALF_DOWN), 
                 'capital' => round($capital, 2, PHP_ROUND_HALF_DOWN),
-                'totalMes' => round($total, 2, PHP_ROUND_HALF_DOWN)
+                'totalMes' => round($total, 2, PHP_ROUND_HALF_DOWN),
+                'fecha' => $this->fecha
             ));
 
             $this->montoTotal -= $capital;
@@ -102,5 +106,12 @@ class TablaAmortizacion implements TablaAmortizacionInterface
     private function InteresCalculado()
     {
         return ($this->interes / 100) / 12;
+    }
+
+    private function NuevaFecha()
+    {
+        $nuevaFecha = date_create($this->fecha);
+        $nuevaFecha = date_modify($nuevaFecha, '+1 month');
+        $this->fecha = date_format($nuevaFecha, 'd-m-Y');
     }
 }
