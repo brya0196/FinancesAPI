@@ -14,10 +14,12 @@ class AmortizacionController extends Controller
         $this->tablaAmortizacion = new TablaAmortizacion();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        // return $this->tablaAmortizacion->Amortizacion(475515.00, 15.95, 60);
+        $monto = (float)$request->monto;
+        $tasa = (float)$request->tasa;
+        $plazo = (float)$request->plazo;
 
-        return $this->tablaAmortizacion->Amortizacion(1002500.00, 9.30, 84);
+        return $this->tablaAmortizacion->Amortizacion($monto, $tasa, $plazo);
     }
 }

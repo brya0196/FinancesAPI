@@ -54,26 +54,27 @@ class TablaAmortizacion implements TablaAmortizacionInterface
 
             array_push($tabla['tablaAmortizacion'], array(
                 'id' => $i,
-                'saldo' => $this->montoTotal,
-                'interes' => $interes, 
-                'capital' => $capital,
-                'totalMes' => $total,
-                'fecha' => date('d/m/Y')
+                'saldo' =>  round($this->montoTotal, 2, PHP_ROUND_HALF_DOWN),
+                'interes' => round($interes, 2, PHP_ROUND_HALF_DOWN), 
+                'capital' => round($capital, 2, PHP_ROUND_HALF_DOWN),
+                'totalMes' => round($total, 2, PHP_ROUND_HALF_DOWN)
             ));
 
             $this->montoTotal -= $capital;
 
-            $this->montoTotal = round($this->montoTotal, 2);
+            $sumaCapital = $tabla['totalCapital'] + $capital;
+            $tabla['totalCapital'] = $sumaCapital;
 
-            $tabla['totalCapital'] += $capital;
-            $tabla['totalCapital'] = round($tabla['totalCapital'], 2);
+            $sumaInteres = $tabla['totalInteres'] + $interes;
+            $tabla['totalInteres'] = $sumaInteres;
 
-            $tabla['totalInteres'] += $interes;
-            $tabla['totalInteres'] = round($tabla['totalInteres'], 2);
-
-            $tabla['totalPagado'] += $total;
-            $tabla['totalPagado'] = round($tabla['totalPagado'], 2);
+            $sumaPagos = $tabla['totalPagado'] + $total;
+            $tabla['totalPagado'] = $sumaPagos;
         }
+
+        $tabla['totalCapital'] = number_format($tabla['totalCapital'], 2, '.', '');
+        $tabla['totalInteres'] = number_format($tabla['totalInteres'], 2, '.', '');
+        $tabla['totalPagado'] = number_format($tabla['totalPagado'], 2, '.', '');
 
         return $tabla;
     }
@@ -81,13 +82,13 @@ class TablaAmortizacion implements TablaAmortizacionInterface
     private function CalcularCapital($total)
     {
         $capital = $total - ($this->montoTotal * $this->InteresCalculado()); 
-        return round($capital, 2);
+        return $capital;
     }
 
     private function CalcularInteres($total,$capital)
     {   
         $interes = $total - $capital;
-        return round($interes, 2);
+        return $interes;
     }
 
     private function TotalMes()
@@ -95,7 +96,7 @@ class TablaAmortizacion implements TablaAmortizacionInterface
         $calculo = pow((1 + $this->InteresCalculado()), $this->plazo);
         $resultado = ($calculo - 1) / ($this->InteresCalculado() * $calculo);
         $total = $this->montoTotal / $resultado;
-        return round($total, 2);
+        return $total;
     }
 
     private function InteresCalculado()

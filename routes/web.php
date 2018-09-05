@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/amortizacion', 'AmortizacionController@index');
+Route::post('/amortizacion', 'AmortizacionController@index');
